@@ -1,4 +1,4 @@
 # threejs-template
 to run:
-> npm install
-> parcel index.html
+- npm install
+- parcel index.html
