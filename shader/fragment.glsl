@@ -6,5 +6,4 @@ void main() {
   vec4 image = texture2D(t2, myUV);
   gl_FragColor = image;
   //gl_FragColor = vec4(vCoordinates.x/512.,vCoordinates.y/512.,0.,1.);
-
 }
