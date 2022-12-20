@@ -11,8 +11,9 @@ import fragment from "./shader/fragment.glsl";
 import vertex from "./shader/vertex.glsl";
 import GUI from "lil-gui";
 import gsap from "gsap";
+import mask from './img/particle.jpg'
 import t1 from './img/t.png';
-import t2 from './img/t1.png';
+import t2 from './img/wafer_desaturate.png';
 import particleTexture from "./particle.webp";
 
 export default class Sketch {
@@ -30,6 +31,7 @@ export default class Sketch {
       new THREE.TextureLoader().load(t1),
       new THREE.TextureLoader().load(t2)
     ];
+    this.mask = new THREE.TextureLoader().load(mask)
     this.time = 0;
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     
@@ -43,7 +45,7 @@ export default class Sketch {
 
   render(){
     this.time++;
-    console.log(this.time);
+    //console.log(this.time);
     this.mesh.rotation.x += 0.01;
     this.mesh.rotation.y += 0.02;
 
@@ -58,7 +60,8 @@ export default class Sketch {
       uniforms:{
         progress: {type:"f", value:0},
         t1:{type:"t",value:this.textures[0]},
-        t2:{type:"t",value:this.textures[1]}
+        t2:{type:"t",value:this.textures[1]},
+        mask:{type:"t",value:this.mask}
       },
       side: THREE.DoubleSide,
       transparent: true,

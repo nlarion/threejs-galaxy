@@ -3,10 +3,10 @@
         "@parcel/config-default": "^2.7.0",
         "gsap": "^3.11.1",
         "lil-gui": "^0.17.0",
-        "parcel": "^2.7.0",
         "three": "^0.144.0"
     },
     "devDependencies": {
-        "@parcel/transformer-glsl": "^2.7.0"
+        "@parcel/transformer-glsl": "^2.7.0",
+        "parcel": "^2.8.2"
     }
 }
