@@ -44,10 +44,12 @@ export default class Sketch {
   }
 
   mouseEffects(){
-    this.test = new THREE.Mesh(
+    this.mouseMeshLayer = new THREE.Mesh(
       new THREE.PlaneBufferGeometry(1000,1000),
       new THREE.MeshBasicMaterial()
-    )
+    );
+    this.mouseMeshLayer.rotateX(40);
+
     window.addEventListener('mousewheel', (e)=>{
       this.move += e.wheelDeltaY/4000;
     });
@@ -57,7 +59,7 @@ export default class Sketch {
         duration: 1,
         value: 1,
         ease: "elastic.out(1, 0.3)"
-      })
+      });
     });
 
     window.addEventListener('mouseup', (e)=>{
@@ -65,17 +67,24 @@ export default class Sketch {
         duration: 1,
         value: 0,
         ease: "elastic.out(1, 0.3)"
-      })
+      });
     });
 
     window.addEventListener('mousemove', (e)=>{
-      this.mouse.x = ( e.clientX / window.innerWidth ) * 2 - 1;
-      this.mouse.y = - ( e.clientY / window.innerHeight ) * 2 + 1;
+      let currentZRotation = -this.mouseMeshLayer.rotation.z;
+      let currentMouseX = ( e.clientX / window.innerWidth ) * 2 - 1;
+      let currentMouseY = ( e.clientY / window.innerHeight ) * 2 - 1;
+      this.mouse.x = ( currentMouseX * Math.cos(currentZRotation) -  currentMouseY  * Math.sin(currentZRotation));
+      this.mouse.y = ( currentMouseX * Math.sin(currentZRotation) +  currentMouseY  * Math.cos(currentZRotation));
+
+
       this.raycaster.setFromCamera( this.mouse, this.camera );
 
+      //this.mouse.x =  this.mouse.x;
+
       // calculate objects intersecting the picking ray
-      let intersects = this.raycaster.intersectObjects( [this.test] );
-      //console.log(intersects[0].point);
+      let intersects = this.raycaster.intersectObjects( [this.mouseMeshLayer] );
+      //console.log(this.mouse, currentZRotation);
       this.point.x = intersects[0].point.x;
       this.point.y = intersects[0].point.y;
       this.point.z = intersects[0].point.z;
@@ -141,9 +150,10 @@ export default class Sketch {
 
   render(){
     this.time++;
-    // rotates mesh
-    //  this.mesh.rotation.x = 0.001;
-     this.mesh.rotation.z += 0.001;
+    // rotates mesh and mouse 
+    let roation = 0.001;
+    this.mouseMeshLayer.rotation.z += roation;
+    this.mesh.rotation.z += roation;
 
     // let next = (Math.floor(this.move)+40)%2;
     // stuff for image shift
