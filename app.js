@@ -16,14 +16,16 @@ import t2 from './img/wafer_color.png';
 
 export default class Sketch {
   constructor(options) {
+    this.scene = new THREE.Scene();
     this.container = options.dom;
+    this.width = this.container.offsetWidth;
+    this.height = this.container.offsetHeight;
     this.renderer = new THREE.WebGLRenderer( { antialias: true } );
     this.renderer.setSize( window.innerWidth, window.innerHeight );
     this.container.appendChild(this.renderer.domElement);
     this.scene = new THREE.Scene();
-    this.camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 3000 );
+    this.camera = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 0.1, 1000 );
     this.camera.position.z = 1000;
-    this.scene = new THREE.Scene();
     this.scene.background = new THREE.Color('rgb(17, 17, 60)');
     this.raycaster = new THREE.Raycaster();
     this.mouse = new THREE.Vector2();
@@ -40,7 +42,9 @@ export default class Sketch {
     //this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     this.addMesh();
     this.mouseEffects();
+    this.resize();
     this.render();
+    this.setupResize();
   }
 
   mouseEffects(){
@@ -80,6 +84,15 @@ export default class Sketch {
       this.point.y = intersects[0].point.y;
       this.point.z = intersects[0].point.z;
     });
+  }
+
+  setupResize() {
+    window.addEventListener("resize", this.resize.bind(this));
+  }
+
+  resize() {
+    this.width = this.container.offsetWidth;
+    this.height = this.container.offsetHeight;
   }
   
   addMesh(){
@@ -143,7 +156,7 @@ export default class Sketch {
     this.time++;
     // rotates mesh
     //  this.mesh.rotation.x = 0.001;
-     this.mesh.rotation.z += 0.001;
+    // this.mesh.rotation.z += 0.001;
 
     // let next = (Math.floor(this.move)+40)%2;
     // stuff for image shift
